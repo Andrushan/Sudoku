@@ -1,0 +1,43 @@
+className = 'sudoku-cell';
+                    cell.maxLength = 1;
+                    cell.value = board[row][col] === 0 ? '' : board[row][col];
+                    if (board[row][col] !== 0) {
+                        cell.classList.add('fixed');
+                        cell.readOnly = true;
+                    }
+                    cell.dataset.row = row;
+                    cell.dataset.col = col;
+                    boardElement.appendChild(cell);
+                }
+            }
+        }
+
+        // Проверка решения
+        function checkSolution() {
+            const board = [];
+            const cells = document.querySelectorAll('.sudoku-cell');
+            cells.forEach(cell => {
+                const row = parseInt(cell.dataset.row);
+                const col = parseInt(cell.dataset.col);
+                if (!board[row]) board[row] = [];
+                board[row][col] = parseInt(cell.value) || 0;
+            });
+
+            for (let row = 0; row < 9; row++) {
+                for (let col = 0; col < 9; col++) {
+                    const num = board[row][col];
+                    if (num === 0 || !isValid(board, row, col, num)) {
+                        alert('Решение неверное!');
+                        return;
+                    }
+                }
+            }
+            alert('Поздравляем! Решение верное!');
+        }
+
+        // Инициализация
+        const sudokuBoard = generateSudoku();
+        renderBoard(sudokuBoard);
+    </script>
+</body>
+</html>
